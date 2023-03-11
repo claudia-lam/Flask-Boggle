@@ -32,13 +32,38 @@ def new_game():
     return jsonify(game_info)
 
 
-#  data = response.get_json()
-#             board = data['board']
-#             game_id = data['gameId']
-#             print(data)
-#             # breakpoint()
-#             # write a test for this route
-#             self.assertIn('board', data.keys())
-#             self.assertIn(game_id, games)
-#             self.assertTrue(isinstance(game_id, str))
-#             self.assertTrue(isinstance(board, list))
+@app.post("/api/score-word")
+def handle_word():
+    """
+    input: word - string
+    output:
+        - if not a word return json{result: "not-word"}
+        - if not on board return json{result: "not-on-board"}
+        - if a valid word return json{result: "ok"}
+    """
+
+    word = request.json['word'].upper()
+    game_id = request.json['gameId']
+    game_instance = games[game_id]
+    print(game_instance)
+    breakpoint()
+
+    if not game_instance.is_word_in_word_list(word):
+        return jsonify({"result": "not-word"})
+    elif not game_instance.check_word_on_board(word):
+        return jsonify({"result": "not-on-board"})
+    else:
+        return jsonify({"result": "ok"})
+
+
+
+
+
+
+
+
+
+
+
+
+
