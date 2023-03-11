@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "this-is-secret"
 
 # The boggle games created, keyed by game id
-games = {}
+games = {} # {game_id: game}
 
 
 @app.get("/")
@@ -25,5 +25,20 @@ def new_game():
     game_id = str(uuid4())
     game = BoggleGame()
     games[game_id] = game
+    print(games)
 
-    return {"gameId": "need-real-id", "board": "need-real-board"}
+    game_info = {'gameId': game_id, 'board': game.board}
+
+    return jsonify(game_info)
+
+
+#  data = response.get_json()
+#             board = data['board']
+#             game_id = data['gameId']
+#             print(data)
+#             # breakpoint()
+#             # write a test for this route
+#             self.assertIn('board', data.keys())
+#             self.assertIn(game_id, games)
+#             self.assertTrue(isinstance(game_id, str))
+#             self.assertTrue(isinstance(board, list))
