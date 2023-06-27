@@ -48,3 +48,47 @@ class BoggleAppTestCase(TestCase):
             self.assertIn(game_id, games)
             self.assertTrue(isinstance(game_id, str))
             self.assertTrue(isinstance(board, list))
+
+    def test_score_word(self):
+        """Make sure word is legal, not on board, or not a word"""
+
+        with self.client as client:
+            new_game = client.post("/api/new-game")
+            new_game_decoded = new_game.get_json()
+
+            game_id = new_game_decoded["gameId"]
+
+            current_game = games[game_id]
+
+            # change the random board to a fixed board
+            current_game.board = [['A', 'B', 'C'],
+                                  ['D', 'A', 'D'],
+                                  ['C', 'A', 'T']]
+
+            current_game.board_size = 3
+
+            # if not a word in the english language
+            response = client.post(
+                "/api/score-word",
+                json={'gameId': game_id, 'word': 'asdfasdf'})
+            data = response.get_json()
+
+            self.assertEqual(data, {"result": "not-word"})
+
+            # if word not on board
+            response = client.post(
+                "/api/score-word",
+                json={'gameId': game_id, 'word': 'DOG'})
+            response_data = response.get_json()
+
+            self.assertEqual(response_data, {
+                             "result": "not-on-board"})
+
+            # if word is valid
+            response = client.post(
+                "/api/score-word",
+                json={'gameId': game_id, 'word': 'DAD'})
+            response_data = response.get_json()
+
+            self.assertEqual(response_data, {
+                             "result": "ok"})

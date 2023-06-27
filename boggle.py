@@ -3,6 +3,7 @@
 from random import choice
 from wordlist import english_words
 
+#letters in a bag 
 DEFAULT_LETTERS_BY_FREQ = (
         "EEEEEEEEEAAAAAAAOOOOOOIIIIUUU" +  # super-common
         "RRRRRSSSSSSTTTTTLLLLNNN" +  # common

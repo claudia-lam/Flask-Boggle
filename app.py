@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "this-is-secret"
 
 # The boggle games created, keyed by game id
-games = {} # {game_id: game}
+games = {}  # {game_id: game}
 
 
 @app.get("/")
@@ -46,7 +46,6 @@ def handle_word():
     game_id = request.json['gameId']
     game_instance = games[game_id]
     print(game_instance)
-    breakpoint()
 
     if not game_instance.is_word_in_word_list(word):
         return jsonify({"result": "not-word"})
@@ -54,16 +53,3 @@ def handle_word():
         return jsonify({"result": "not-on-board"})
     else:
         return jsonify({"result": "ok"})
-
-
-
-
-
-
-
-
-
-
-
-
-
