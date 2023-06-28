@@ -38,19 +38,19 @@ function displayBoard(board) {
 }
 
 /** Add an event handler for submits on the form */
-async function handleClick(evt) {
+async function handleFormSubmit(evt) {
   evt.preventDefault()
 
   //grab the word
   const word = $wordInput.val()
 
-  //make a request to score the word
-  let response = await axios.post("/api/score-word", {
-    "gameId": gameId,
-	  "word": word
-  })
+  // //make a request to check if played word is valid
+  // let response = await axios.post("/api/score-word", {
+  //   "gameId": gameId,
+	//   "word": word
+  // })
 
-  const result = response.data.result
+  const result = checkPlayedWord(word)
 
   if (result !== 'ok') {
     $message.html(result)
@@ -59,10 +59,17 @@ async function handleClick(evt) {
     $playedWord.html(word)
     $playedWords.append($playedWord)
   }
-  debugger
+}
+
+function checkPlayedWord(word) {
+  let response = await axios.post("/api/score-word", {
+    "gameId": gameId,
+	  "word": word
+  })
+
+  return {result} = response.data
 }
 
 
-
 start();
-$form.on("submit", handleClick);
+$form.on("submit", handleFormSubmit);
