@@ -51,6 +51,14 @@ async function handleClick(evt) {
   })
 
   const result = response.data.result
+
+  if (result !== 'ok') {
+    $message.html(result)
+  } else {
+    const $playedWord = $("<li></li>")
+    $playedWord.html(word)
+    $playedWords.append($playedWord)
+  }
   debugger
 }
 
