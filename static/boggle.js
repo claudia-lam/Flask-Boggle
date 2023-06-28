@@ -29,13 +29,32 @@ function displayBoard(board) {
       //add coordinates to each td as a class
       const $cell = $("<td>")
       $cell.addClass(`${x}-${y}`)
+      //add text to each td
       $cell.text(`${board[y][x]}`)
       $row.append($cell)
-        //add text to each td
       }
     $table.append($row)
   }
 }
 
+/** Add an event handler for submits on the form */
+async function handleClick(evt) {
+  evt.preventDefault()
+
+  //grab the word
+  const word = $wordInput.val()
+
+  //make a request to score the word
+  let response = await axios.post("/api/score-word", {
+    "gameId": gameId,
+	  "word": word
+  })
+
+  const result = response.data.result
+  debugger
+}
+
+
 
 start();
+$form.on("submit", handleClick);
